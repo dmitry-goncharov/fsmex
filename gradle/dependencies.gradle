@@ -1,0 +1,9 @@
+ext {
+    versions = [
+            scala       : '2.13.16',
+            scalaBinary : '2.13',
+            scalaLogging: '3.9.5',
+            logback     : '1.5.18',
+            graphstream : '2.0'
+    ]
+}

@@ -1,0 +1,69 @@
+plugins {
+    id 'scala'
+    id 'maven-publish'
+}
+
+apply from: "$rootDir/gradle/dependencies.gradle"
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+compileScala {
+    setSourceCompatibility("17")
+    setTargetCompatibility("17")
+    scalaCompileOptions.additionalParameters = [
+            "-deprecation",
+            "-unchecked",
+            "-encoding", "utf8",
+            "-target:jvm-17",
+            "-Xlog-reflective-calls",
+            "-feature",
+            "-language:postfixOps",
+            "-language:implicitConversions",
+            "-language:existentials"
+    ]
+
+    configure(scalaCompileOptions.forkOptions) {
+        memoryMaximumSize = '1g'
+        jvmArgs = []
+    }
+}
+
+dependencies {
+    implementation(group: 'org.scala-lang', name: 'scala-library', version: versions.scala)
+    implementation(group: 'org.scala-lang', name: 'scala-reflect', version: versions.scala)
+    implementation(group: 'org.scala-lang', name: 'scala-compiler', version: versions.scala)
+
+    implementation(group: 'com.typesafe.scala-logging', name: "scala-logging_$versions.scalaBinary", version: versions.scalaLogging) {
+        exclude group: 'org.scala-lang'
+    }
+    implementation(group: 'ch.qos.logback', name: 'logback-classic', version: versions.logback)
+    implementation(group: 'org.graphstream', name: 'gs-core', version: versions.graphstream)
+    implementation(group: 'org.graphstream', name: 'gs-ui-swing', version: versions.graphstream)
+}
+
+configurations {
+    app {
+        extendsFrom runtimeOnly
+    }
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'fsmviewer.App'
+        )
+    }
+
+    exclude 'META-INF/*SF'
+    exclude 'META-INF/*DSA'
+    exclude 'META-INF/*RSA'
+
+    from {
+        configurations.app.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
