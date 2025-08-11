@@ -36,12 +36,8 @@ dependencies {
     implementation(group: 'org.scala-lang', name: 'scala-reflect', version: versions.scala)
     implementation(group: 'org.scala-lang', name: 'scala-compiler', version: versions.scala)
 
-    implementation(group: 'com.typesafe.scala-logging', name: "scala-logging_$versions.scalaBinary", version: versions.scalaLogging) {
-        exclude group: 'org.scala-lang'
-    }
+    implementation(group: 'com.typesafe.scala-logging', name: "scala-logging_$versions.scalaBinary", version: versions.scalaLogging)
     implementation(group: 'ch.qos.logback', name: 'logback-classic', version: versions.logback)
-    implementation(group: 'org.graphstream', name: 'gs-core', version: versions.graphstream)
-    implementation(group: 'org.graphstream', name: 'gs-ui-swing', version: versions.graphstream)
 }
 
 configurations {
@@ -53,7 +49,7 @@ configurations {
 jar {
     manifest {
         attributes(
-                'Main-Class': 'fsmviewer.App'
+                'Main-Class': 'ru.dwerty.fsm.fsmex.App'
         )
     }
 
